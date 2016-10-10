@@ -5,22 +5,26 @@
     "description": "A better new tab",
     "version": "0.1",
     "browser_action": {
-      "default_icon": "icon.png",
-      "default_popup": "popup.html"
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
     },
     "permissions" : [
-      "management",
-      "topsites"
+        "management",
+        "storage"
     ],
+    "_should_be_named_background": {
+        "scripts": ["eventpage.js"],
+        "persistent": false
+    },
     "chrome_url_overrides" : {
         "newtab": "newtab.html"
     },
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
     "content_scripts": [{
-     "js": [
-       "popup.js",
-       "newtab.js"
-     ],
-     "matches": ["http://*/*", "https://*/*"]
-   }]
+        "js": [
+            "popup.js",
+            "newtab.js"
+        ],
+        "matches": ["http://*/*", "https://*/*"]
+    }]
 }
