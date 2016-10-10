@@ -1,0 +1,117 @@
+body {
+    background: url(background.jpg) no-repeat fixed 100% 100%;
+    background-size: cover;
+    text-align: center;
+}
+
+.wrapper {
+    margin: auto;
+    display: inline-block;
+}
+
+.weather {
+    margin-top: 2rem;
+    background: #a3c4f3;
+    min-height: 100px;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 10px;
+    display: inline-block;
+
+    border-radius: 3px;
+}
+
+.weather .img-wrapper {
+    background: #fcfcfc;
+    width: 100%;
+}
+
+.weather .description {
+    font-family: 'Raleway',sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 28px;
+    margin: 0 0 24px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fefefe;
+}
+
+.weather .temperature {
+    font-family: 'Raleway',sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 28px;
+    margin: 0 0 24px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fefefe;
+}
+
+.news-wrapper {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.news.card {
+    background-color: #c7ced0;
+}
+
+.news.card .card-block {
+    height: 200px;
+    background-color: #fefefe;
+    position: relative;
+}
+
+.news.card .card-block h4 {
+    font-size: 1.3rem;
+}
+
+.news.card .card-block .btn-wrapper{
+    width: 100%;
+    margin-left: -1.25rem;
+    position: absolute;
+    bottom: 0;
+}
+
+.news.card .card-block .btn-wrapper a.btn {
+    color: black;
+    background-color: #cee3f8;
+    margin-bottom: 1rem;
+}
+
+.news.card .card-img-top {
+    height: 150px;
+    background-color: grey;
+}
+
+#apps {
+    width: 400px;
+    margin: auto;
+}
+
+.row {
+    display: table-row;
+}
+
+.app {
+    display: table-cell;
+}
+
+#quote {
+    font-family: 'Raleway',sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 48px;
+    text-transform: uppercase;
+    color: #fefefe;
+
+    padding-top: 50px;
+    margin: 0 0 24px;
+    text-align: center;
+    clear: both;
+}
+
+.quote-string {
+    margin: 0;
+}
