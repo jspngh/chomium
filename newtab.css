@@ -1,24 +1,67 @@
+@font-face {
+    font-family: 'Andes';
+    src: url('./Andes.ttf');
+}
+
 body {
     background: url(background.jpg) no-repeat fixed 100% 100%;
     background-size: cover;
     text-align: center;
+    font-family: 'Andes' !important;
+    letter-spacing: 3px;
 }
 
 .wrapper {
     margin: auto;
-    display: inline-block;
+    /* display: inline-block; */
+    width: 100&;
+}
+
+.fill {
+    height: 100%;
+}
+
+.text-center {
+    /* font-family: 'Raleway',sans-serif; */
+    font-weight: 800;
+    line-height: 48px;
+    text-transform: uppercase;
+    color: #fefefe;
+
+    margin: 250px 0 50px;
+    text-align: center;
+}
+
+.time {
+    font-size: 78px;
+    letter-spacing: 5px;
+}
+
+.quote {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 43vh;
+    margin: 1vh 15px;
+    padding: 0 15px;
+
+    font-size: 32px;
+    color: white;
+    background: #a3c4f3;
+}
+
+.quote-string {
+    margin: 0;
 }
 
 .weather {
-    margin-top: 2rem;
     background: #a3c4f3;
-    min-height: 100px;
-    min-width: 200px;
-    max-width: 300px;
-    padding: 10px;
     display: inline-block;
-
     border-radius: 3px;
+    width: 100%;
+    height: 50vh;
+    padding: 10px;
+    margin: 1vh 0;
 }
 
 .weather .img-wrapper {
@@ -27,18 +70,15 @@ body {
 }
 
 .weather .description {
-    font-family: 'Raleway',sans-serif;
-    font-size: 18px;
-    font-weight: 800;
-    line-height: 28px;
-    margin: 0 0 24px;
+    font-family: 'Roboto','Arial',sans-serif;
+    font-size: 2.5rem;
+    margin: 12px 0 12px;
     text-align: center;
     text-transform: uppercase;
     color: #fefefe;
 }
 
 .weather .temperature {
-    font-family: 'Raleway',sans-serif;
     font-size: 16px;
     font-weight: 800;
     line-height: 28px;
@@ -49,22 +89,41 @@ body {
 }
 
 .news-wrapper {
-    margin-top: 3rem;
-    margin-bottom: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .news.card {
     background-color: #c7ced0;
+    height: 150px;
+    margin-left: .75rem;
+}
+
+.card .img-wrapper {
+    width: 40%;
+    max-height: 100%;
+    background-color: grey;
+    float: left;
+}
+
+.card .img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .news.card .card-block {
-    height: 200px;
+    margin-left: 40%;
     background-color: #fefefe;
     position: relative;
+    max-height: 100%;
+    font-family: 'Roboto','Arial',sans-serif;
 }
 
 .news.card .card-block h4 {
-    font-size: 1.3rem;
+    line-height: 1.1;
+    font-size: 1rem;
+    letter-spacing: 0;
 }
 
 .news.card .card-block .btn-wrapper{
@@ -80,38 +139,6 @@ body {
     margin-bottom: 1rem;
 }
 
-.news.card .card-img-top {
-    height: 150px;
-    background-color: grey;
-}
-
-#apps {
-    width: 400px;
-    margin: auto;
-}
-
 .row {
     display: table-row;
-}
-
-.app {
-    display: table-cell;
-}
-
-#quote {
-    font-family: 'Raleway',sans-serif;
-    font-size: 32px;
-    font-weight: 800;
-    line-height: 48px;
-    text-transform: uppercase;
-    color: #fefefe;
-
-    padding-top: 50px;
-    margin: 0 0 24px;
-    text-align: center;
-    clear: both;
-}
-
-.quote-string {
-    margin: 0;
 }

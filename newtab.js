@@ -1,7 +1,15 @@
-function quote(){
-    chrome.storage.local.get('quote', function(result){
+function time() {
+    var h = new Date().getHours();
+    var m = new Date().getMinutes();
+    h = h > 9 ? h : "0" + h;
+    m = m > 9 ? m : "0" + m;
+    $("#time").text(h + ":" + m);
+}
+
+function quote() {
+    chrome.storage.local.get('chm-quote', function(result){
         if (!jQuery.isEmptyObject(result)) {
-            var quote = result.quote.quote;
+            var quote = result['chm-quote'].quote.quote;
             quoteSplit = quote.split(/[.\(;\)]+/);
             for(var i in quoteSplit) {
                 if (quoteSplit[i] !== "") {
@@ -10,15 +18,24 @@ function quote(){
                                        .text(quoteSplit[i]));
                 }
             }
-            $("#quote").append($("<p></p>")
+            $("#quote").append($("<i></i>")
                                .addClass("quote-author")
-                               .text(result.quote.author));
+                               .text("- " + result['chm-quote'].quote.author));
 
-            // Do a refresh in an event page
-            //chrome.storage.local.set({'quote': quote});
+            var sec = new Date().getTime() / 1000;
+            if (Math.abs(sec - result['chm-quote'].time) > 3600) {
+                // Do a refresh in an event page
+                chrome.runtime.sendMessage({refresh: "quote"});
+            }
         } else {
             $.getJSON('http://quotes.rest/qod.json?category=inspire', function(data) {
-                chrome.storage.local.set({'quote': data.contents.quotes[0]});
+                var sec = new Date().getTime() / 1000;
+                chrome.storage.local.set({
+                    'chm-quote': {
+                        'quote': data.contents.quotes[0],
+                        'time': sec
+                    }
+                });
                 var quote = data.contents.quotes[0].quote;
                 quoteSplit = quote.split(/[.\(;\)]+/);
                 for(var i in quoteSplit) {
@@ -36,27 +53,61 @@ function quote(){
     });
 }
 
-function news() {
-    chrome.storage.local.get('news', function(result){
+function weather() {
+    chrome.storage.local.get('chm-weather', function(result){
         if (!jQuery.isEmptyObject(result)) {
-            alert("is loaded");
-            var firstCol = $("#first-col");
-            var secondCol = $("#second-col");
-            var thirdCol = $("#third-col");
+            var weather = result['chm-weather'].weather;
+            $("#weather-img").attr("src", "http://openweathermap.org/img/w/"+weather.icon+".png");
+            $("#weather-descr").text(weather.main);
+            $("#weather-temp").text(weather.temp);
 
-            var cntr = 0;
+            var sec = new Date().getTime() / 1000;
+            if (Math.abs(sec - result['chm-weather'].time) > 120) {
+                // Do a refresh in an event page
+                chrome.runtime.sendMessage({refresh: "weather"});
+            }
+        } else {
+            $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Taipei&units=metric&APPID=6b75ba0d8c8118e7c0bcf3d64f5376cf", function(data){
+                var sec = new Date().getTime() / 1000;
+                chrome.storage.local.set({
+                    'chm-weather': {
+                        'weather': data.weather[0],
+                        'time': sec
+                    }
+                });
+                $("#weather-img").attr("src", "http://openweathermap.org/img/w/"+data.weather[0].icon+".png");
+                $("#weather-descr").text(data.weather[0].main);
+                $("#weather-temp").text(data.main.temp);
+            });
+        }
+    });
+}
 
-            var posts = result.news;
+function news() {
+    chrome.storage.local.get('chm-news', function(result){
+        if (!jQuery.isEmptyObject(result)) {
+            var news = $("#news");
+            var posts = result['chm-news'].news;
 
             for(var p in posts) {
                 var post = posts[p];
-                var title = post.data.title;
                 var domain = post.data.subreddit;
-                var text = post.data.selftext;
+                var thumb = post.data.thumbnail;
+                if (thumb === "default" ||
+                    thumb === "self" ||
+                    thumb === "icon" ||
+                    thumb === "image" ||
+                    thumb === "nsfw") {
+                        thumb = "default.png";
+                    }
+
+                var title = post.data.title;
                 var trimmedTitle = title.substr(0, 100);
                 if (trimmedTitle !== title) {
                     title = trimmedTitle + "...";
                 }
+
+                var text = post.data.selftext;
                 var trimmedText = text.substr(0, 100);
                 if (trimmedText !== text) {
                     text = trimmedText + "...";
@@ -76,55 +127,36 @@ function news() {
                                     .text(domain)));
                 var card = $('<div></div>')
                     .addClass("news card")
-                    .append($('<img>')
-                            .addClass("card-img-top")
-                            .attr("src", post.data.thumbnail))
+                    .append($('<div></div>')
+                            .addClass("img-wrapper")
+                            .append($('<img>')
+                                    .attr("src", thumb)))
                     .append(cardblock);
 
-                if (cntr == 0) {
-                    firstCol.append(card);
-                    cntr = 1;
-                } else if (cntr == 1) {
-                    secondCol.append(card);
-                    cntr = 2;
-                } else if (cntr == 2) {
-                    thirdCol.append(card);
-                    cntr = 0;
-                }
+                news.append(card);
             }
 
-            // Do a refresh in an event page
-            //chrome.storage.local.set({'news': news});
+            var sec = new Date().getTime() / 1000;
+            if (Math.abs(sec - result['chm-news'].time) > 360) {
+                // Do a refresh in an event page
+                chrome.runtime.sendMessage({refresh: "news"});
+            }
         }
         else {
             $.getJSON("https://www.reddit.com/r/all/hot/.json?count=10", function(data){
-                chrome.storage.local.set({'news': data.data.children});
-            });
-        }
-    });
-}
-
-function weather() {
-    chrome.storage.local.get('weather', function(result){
-        if (!jQuery.isEmptyObject(result)) {
-            var weather = result.weather;
-            $("#weather-img").attr("src", "http://openweathermap.org/img/w/"+weather.icon+".png");
-            $("#weather-descr").text(weather.main);
-            $("#weather-temp").text(weather.temp);
-
-            // Do a refresh in an event page
-            //chrome.storage.local.set({'weather': weather});
-        } else {
-            $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Taipei&units=metric&APPID=6b75ba0d8c8118e7c0bcf3d64f5376cf", function(data){
-                chrome.storage.local.set({'weather': data.weather[0]});
-                $("#weather-img").attr("src", "http://openweathermap.org/img/w/"+data.weather[0].icon+".png");
-                $("#weather-descr").text(data.weather[0].main);
-                $("#weather-temp").text(data.main.temp);
+                var sec = new Date().getTime() / 1000;
+                chrome.storage.local.set({
+                    'chm-news': {
+                        'news': data.data.children,
+                        'time': sec
+                    }
+                });
             });
         }
     });
 }
 
 document.addEventListener("DOMContentLoaded", quote());
-document.addEventListener("DOMContentLoaded", news());
 document.addEventListener("DOMContentLoaded", weather());
+document.addEventListener("DOMContentLoaded", time());
+document.addEventListener("DOMContentLoaded", news());

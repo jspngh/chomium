@@ -10,9 +10,10 @@
     },
     "permissions" : [
         "management",
-        "storage"
+        "storage",
+        "tabs"
     ],
-    "_should_be_named_background": {
+    "background": {
         "scripts": ["eventpage.js"],
         "persistent": false
     },
